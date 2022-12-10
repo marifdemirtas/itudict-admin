@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const StyledErrorMessage = styled.div``;
 
@@ -9,8 +10,13 @@ const LoginCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    if (values.username === "admin" && values.password === "admin") {
+  const url = "http://localhost:4000/user/login";
+
+  const onFinish = async (values: any) => {
+    console.log(values);
+    const response = await axios.post(url, values);
+    console.log(response);
+    if (response.status === 200) {
       setValid(true);
       navigate("/panel");
     } else {
@@ -37,9 +43,9 @@ const LoginCard = (): JSX.Element => {
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: "Please input your email!" }]}
         >
           <Input />
         </Form.Item>
@@ -50,14 +56,6 @@ const LoginCard = (): JSX.Element => {
           rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

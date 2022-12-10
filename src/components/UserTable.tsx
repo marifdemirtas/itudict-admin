@@ -8,6 +8,7 @@ interface DataType {
   role: string;
   address: string;
   actions: string[];
+  action: string[];
 }
 
 const columns: ColumnsType<DataType> = [
@@ -29,17 +30,20 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: 'Actions',
-    key: 'action',
-    dataIndex: 'action',
+    key: 'actions',
+    dataIndex: 'actions',
     render: (_, { actions }) => (
       <>
         {actions.map((action) => {
-          let color = action.length > 6 ? 'geekblue' : 'green';
+          let color = action ===  "Promote" ? 'geekblue' : 'green';
           if (action === 'Ban') {
             color = 'volcano';
           }
+          const handleClick = (key: String) => {
+            console.log(key);   
+          }
           return (
-            <Tag color={color} key={action}>
+            <Tag color={color} key={action} onClick={() => handleClick(action)}>
               {action.toUpperCase()}
             </Tag>
           );
@@ -50,12 +54,23 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Action',
     key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Delete</a>
-      </Space>
+    dataIndex: 'action',
+    render: (_, { action }) => (
+      <>
+        {action.map((action) => {
+          let color = 'black'
+          const handleClick = (key: String) => {
+            console.log(key);   
+          }
+          return (
+            <Tag color={color} key={action} onClick={() => handleClick(action)}>
+              {action.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
     ),
-  },
+  }
 ];
 
 const data: DataType[] = [
@@ -65,6 +80,7 @@ const data: DataType[] = [
     role: "Junior",
     address: 'New York No. 1 Lake Park',
     actions: ['Promote', 'Ban'],
+    action: ['Delete']
   },
   {
     key: '2',
@@ -72,6 +88,7 @@ const data: DataType[] = [
     role: "Senior",
     address: 'London No. 1 Lake Park',
     actions: ['Demote', 'Ban'],
+    action: ['Delete']
   },
   {
     key: '3',
@@ -79,9 +96,14 @@ const data: DataType[] = [
     role: "Junior",
     address: 'Sidney No. 1 Lake Park',
     actions: ['Promote', 'Ban'],
+    action: ['Delete']
   },
 ];
 
-const UserTable = ():JSX.Element => <Table columns={columns} dataSource={data} />;
+const UserTable = ():JSX.Element => {
+    return (
+    <Table columns={columns} dataSource={data} />
+    )
+};
 
 export default UserTable;
