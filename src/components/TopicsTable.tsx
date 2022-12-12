@@ -1,6 +1,7 @@
 import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { User } from './UserTable';
 
 interface DataType {
   key: string;
@@ -99,6 +100,14 @@ const data: DataType[] = [
     action: ['Delete']
   },
 ];
+
+export type Topic = {
+  name: string;
+  comments: Comment[];
+  createdAt: Date;
+  createdBy: User;
+  comment_count: number;
+}
 
 const TopicsTable = ():JSX.Element => {
 return (
