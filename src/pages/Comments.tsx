@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import UserTable from "../components/UserTable";
 import { useNavigate } from "react-router-dom";
+import CommentsTable from "../components/CommentsTable";
 import Navbar from "../components/Navbar";
 
 const StyledContainer = styled.div`
@@ -20,7 +20,7 @@ const StyledHeaders = styled.div`
   flex-direction: column;
 `;
 
-const Panel = (): JSX.Element => {
+const Comments = (): JSX.Element => {
   const navigate = useNavigate();
   const routeLogin = () => {
     navigate("/login");
@@ -30,11 +30,11 @@ const Panel = (): JSX.Element => {
       <Navbar />
       <StyledHeaders>
         <p>ITU Dict Admin Panel</p>
-        <p>User Table</p>
+        <p>Comment Table</p>
       </StyledHeaders>
-      <UserTable />
+      <CommentsTable />
     </StyledContainer>
   );
 };
 
-export default Panel;
+export default Comments;
