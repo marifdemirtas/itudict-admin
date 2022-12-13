@@ -6,6 +6,7 @@ import Panel from "./pages/Panel";
 import { Route, Routes } from "react-router-dom";
 import Comments from "./pages/Comments";
 import Topics from "./pages/Topics";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/panel" element={<Panel />} />
         <Route path="/comment" element={<Comments />} />
         <Route path="/topic" element={<Topics />} />
