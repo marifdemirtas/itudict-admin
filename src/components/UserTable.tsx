@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Topic } from './TopicsTable';
 import { Comment } from './CommentsTable';
+import axios from 'axios';
 
 interface DataType {
-  key: string;
-  nickname: string;
-  role: string;
-  address: string;
-  actions: string[];
-  action: string[];
+  id?: string;
+  username?: string;
+  role?: string;
+  createdAt?: Date;
+  actions?: string[];
+  action?: string[];
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'nickname',
-    key: 'nickname',
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
     render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Username',
+    dataIndex: 'username',
+    key: 'username',
   },
   {
     title: 'Role',
@@ -26,17 +32,19 @@ const columns: ColumnsType<DataType> = [
     key: 'role',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Created At',
+    dataIndex: 'createdAt',
+    key: 'createdAt',
   },
   {
     title: 'Actions',
     key: 'actions',
     dataIndex: 'actions',
-    render: (_, { actions }) => (
+    render: (_, { actions }) => {
+      return (
       <>
-        {actions.map((action) => {
+        {actions && 
+        actions.map((action) => {
           let color = action ===  "Promote" ? 'geekblue' : 'green';
           if (action === 'Ban') {
             color = 'volcano';
@@ -50,16 +58,17 @@ const columns: ColumnsType<DataType> = [
             </Tag>
           );
         })}
-      </>
-    ),
+      </>)
+    },
   },
   {
     title: 'Action',
     key: 'action',
     dataIndex: 'action',
-    render: (_, { action }) => (
+    render: (_, { action }) => {
+      return (
       <>
-        {action.map((action) => {
+        {action && action.map((action) => {
           let color = 'black'
           const handleClick = (key: String) => {
             console.log(key);   
@@ -71,38 +80,13 @@ const columns: ColumnsType<DataType> = [
           );
         })}
       </>
-    ),
+      )
+    },
   }
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    nickname: 'John Brown',
-    role: "Junior",
-    address: 'New York No. 1 Lake Park',
-    actions: ['Promote', 'Ban'],
-    action: ['Delete']
-  },
-  {
-    key: '2',
-    nickname: 'Jim Green',
-    role: "Senior",
-    address: 'London No. 1 Lake Park',
-    actions: ['Demote', 'Ban'],
-    action: ['Delete']
-  },
-  {
-    key: '3',
-    nickname: 'Joe Black',
-    role: "Junior",
-    address: 'Sidney No. 1 Lake Park',
-    actions: ['Promote', 'Ban'],
-    action: ['Delete']
-  },
-];
-
 export type User = {
+  id: string;
   username: string;
   email: string;
   password: string;
@@ -114,9 +98,35 @@ export type User = {
   createdAt: Date;
 }
 
+
+const url = "http://localhost:4000/user/all";
+
 const UserTable = ():JSX.Element => {
+    const [tableElements, setTableElements] = useState<DataType[]>();
+
+    React.useEffect(() => {
+      axios.get(url).then((response) => {
+        const element: DataType[] = response.data.map((user:any) => {
+          const userObject: DataType = {
+            id: user._id,
+            username: user.username,
+            role: user.role,
+            createdAt: user.createdAt,
+            actions: ["Ban", user.role === "Senior" ? "Demote" : "Promote"],
+            action: ['Delete'],
+          }
+          return userObject;
+        })
+
+        setTableElements(element);
+        
+      });
+    }, []);
+    
     return (
-    <Table columns={columns} dataSource={data} />
+    <div>
+    {tableElements && <Table columns={columns} dataSource={tableElements} />}
+    </div>
     )
 };
 
