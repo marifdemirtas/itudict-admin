@@ -6,19 +6,17 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 const StyledNavbar = styled.div`
-    width: 100%;
+  display: flex;
+  justify-content: center; 
+  background-color: white;
+  width: 100%;
 `;
-
-const StyledDiv = styled.div`
-    margin-left: 300px;
-`;
-
-
+  
 const items: MenuProps['items'] = [
   {
     label: 'Users',
     key: 'panel',
-    icon: <StyledDiv><ProfileOutlined /></StyledDiv>,
+    icon: <ProfileOutlined />,
   },
   {
     label: 'Comments',
@@ -49,7 +47,7 @@ const Navbar = ():JSX.Element => {
   };
   return (
     <StyledNavbar>
-    <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+      <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
     </StyledNavbar>
   );
 };
