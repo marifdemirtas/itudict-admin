@@ -13,10 +13,8 @@ const LoginCard = (): JSX.Element => {
   const url = "http://localhost:4000/user/login";
 
   const onFinish = async (values: any) => {
-    console.log(values);
     const response = await axios.post(url, values);
-    console.log(response);
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
       setValid(true);
       navigate("/panel");
     } else {
