@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { CommonContext } from "../contexts/CommonContext";
 
 const StyledErrorMessage = styled.div``;
 
@@ -10,10 +11,13 @@ const LoginCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const url = "http://localhost:4000/user/login";
+  const { token, setToken } = useContext(CommonContext);
 
+  const url = "http://localhost:4000/auth/signin";
   const onFinish = async (values: any) => {
     const response = await axios.post(url, values);
+
+    setToken(response.data.accessToken);
     if (response.status >= 200 && response.status < 300) {
       setValid(true);
       navigate("/panel");

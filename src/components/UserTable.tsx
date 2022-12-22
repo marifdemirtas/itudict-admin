@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Topic } from './TopicsTable';
 import { Comment } from './CommentsTable';
 import axios from 'axios';
+import { CommonContext } from "../contexts/CommonContext";
 
 interface DataType {
   id?: string;
@@ -104,8 +105,18 @@ const url = "http://localhost:4000/user/all";
 const UserTable = ():JSX.Element => {
     const [tableElements, setTableElements] = useState<DataType[]>();
 
-    React.useEffect(() => {
-      axios.get(url).then((response) => {
+  const { token, setToken } = useContext(CommonContext);
+
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  };
+
+
+    useEffect(() => {
+      axios.get(url, config).then((response) => {
+        console.log("response");
+        console.log(response);
         const element: DataType[] = response.data.map((user:any) => {
           const userObject: DataType = {
             id: user._id,
