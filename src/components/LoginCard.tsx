@@ -18,6 +18,7 @@ const LoginCard = (): JSX.Element => {
     const response = await axios.post(url, values);
 
     setToken(response.data.accessToken);
+    localStorage.setItem("token", response.data.accessToken);
     if (response.status >= 200 && response.status < 300) {
       setValid(true);
       navigate("/panel");
