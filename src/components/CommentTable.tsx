@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Pagination, Space, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Pagination, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Topic } from './TopicsTable';
 import axios from 'axios';
 import { User } from './UserTable';
 import styled from 'styled-components';
@@ -15,8 +14,7 @@ const StyledPagination = styled(Pagination)`
   .ant-pagination-options{
     display: none !important;
   }
-  `;
-
+`;
 
 interface DataType {
   id: string;
@@ -42,7 +40,6 @@ const deleteCommentUrl = "http://localhost:4000/comment/delete";
 const CommentTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [tableSize, setTableSize] = useState<number>(0);
-  const [paginationSize, setPaginationSize] = useState<number>(5);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [updateTable, setUpdateTable] = useState<boolean>(false);
 
