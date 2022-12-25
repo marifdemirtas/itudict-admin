@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Topic } from './TopicsTable';
 import { Comment } from './CommentTable';
 import axios from 'axios';
-import { CommonContext } from "../contexts/CommonContext";
 
 interface DataType {
   id?: string;
@@ -23,7 +21,6 @@ export type User = {
   password: string;
   comments: Comment[]; // Comments about the user
   liked_comments: Comment[]; // Liked comments
-  topics: Topic[]; // Topics of the user
   role: string; // Role of the user
   isActive: boolean;
   createdAt: Date;
