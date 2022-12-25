@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Topic } from './TopicsTable';
-import { Comment } from './CommentsTable';
+import { Comment } from './CommentTable';
 import axios from 'axios';
 import { CommonContext } from "../contexts/CommonContext";
 

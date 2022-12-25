@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import CommentsTable from "../components/CommentsTable";
+import CommentTable from "../components/CommentTable";
 import Navbar from "../components/Navbar";
 
 const StyledContainer = styled.div`
@@ -32,7 +32,7 @@ const Comments = (): JSX.Element => {
         <p>ITU Dict Admin Panel</p>
         <p>Comment Table</p>
       </StyledHeaders>
-      <CommentsTable />
+      <CommentTable />
     </StyledContainer>
   );
 };
