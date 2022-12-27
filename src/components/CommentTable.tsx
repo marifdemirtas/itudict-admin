@@ -34,10 +34,11 @@ export type Comment = {
 const getAllCommentsUrl = "http://localhost:4000/comment/all";
 const getAllCommentsWithPagination5Url = (page: number) => `http://localhost:4000/comment/all/${page}/5`;
 const getAllCommentsWithPagination10Url = (page: number) => `http://localhost:4000/comment/all/${page}/10`;
-const deleteCommentUrl = "http://localhost:4000/comment/delete";
+const deleteCommentUrl = (id:string) =>  `http://localhost:4000/comment/delete/${id}`;
 
 
-const CommentTable = ():JSX.Element => {
+const CommentTable = ({ setVisible }: { setVisible: (a: boolean) => void} ): JSX.Element => {
+
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [tableSize, setTableSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -55,7 +56,7 @@ const CommentTable = ():JSX.Element => {
           const commentObject: DataType = {
             id: comment._id,
             content: comment.content,
-            owner: comment.owner.username,
+            owner: comment.owner.username || "",
             createdAt: comment.createdAt,
             action: ['Delete'],
           }
@@ -66,18 +67,17 @@ const CommentTable = ():JSX.Element => {
     }, [updateTable, currentPage]);
 
     const deleteHandler = (index: number) => {
-      // if (!!tableElements && tableElements.length > 0) {
-      //   axios.post(deleteCommentUrl, {},
-      //     {
-      //       ...config,
-      //       params: {
-      //         email: tableElements[index].email
-      //       }
-      //     }).then(()=>{
-      //       setUpdateTable(!updateTable);
-      //     }
-      //     )
-      // }
+      if (!!tableElements && tableElements.length > 0) {
+        axios.delete(deleteCommentUrl(tableElements[index].id),
+          {
+            ...config,
+          }).then(()=>{
+            setUpdateTable(!updateTable);
+            setVisible(true);
+            setTimeout(() => {setVisible(false)}, 4000);
+          }
+          )
+      }
     }
 
     const columns: ColumnsType<DataType> = [

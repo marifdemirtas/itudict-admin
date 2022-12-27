@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import CommentTable from "../components/CommentTable";
 import Navbar from "../components/Navbar";
+import { Alert } from "antd";
 
 const StyledContainer = styled.div`
   background-color: #282c34;
@@ -21,18 +21,24 @@ const StyledHeaders = styled.div`
 `;
 
 const Comments = (): JSX.Element => {
-  const navigate = useNavigate();
-  const routeLogin = () => {
-    navigate("/login");
-  };
+  const [visible, setVisible] = useState<boolean>(false);
+
   return (
     <StyledContainer>
+      {visible && (
+        <Alert
+          message="Comment is deleted"
+          type="success"
+          showIcon
+          style={{ position: "absolute", top: "50px", width: "250px" }}
+        />
+      )}
       <Navbar />
       <StyledHeaders>
         <p>ITU Dict Admin Panel</p>
         <p>Comment Table</p>
       </StyledHeaders>
-      <CommentTable />
+      <CommentTable setVisible={setVisible} />
     </StyledContainer>
   );
 };
