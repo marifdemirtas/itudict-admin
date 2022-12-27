@@ -4,6 +4,8 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CommonContext } from "../contexts/CommonContext";
+import { BACKEND_API_URL } from "../utils/constants";
+
 
 const StyledErrorMessage = styled.div``;
 
@@ -13,7 +15,7 @@ const LoginCard = (): JSX.Element => {
 
   const { token, setToken } = useContext(CommonContext);
 
-  const url = "http://44.204.82.242:4000/auth/signin";
+  const url = `${BACKEND_API_URL}/auth/signin`;
   const onFinish = async (values: any) => {
     const response = await axios.post(url, values);
 

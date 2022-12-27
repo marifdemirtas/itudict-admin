@@ -1,0 +1,1 @@
+export const BACKEND_API_URL = "http://18.234.101.87:4000"; // <ip_address>:<port>

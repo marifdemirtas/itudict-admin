@@ -5,6 +5,7 @@ import { Topic } from './TopicsTable';
 import { Comment } from './CommentsTable';
 import axios from 'axios';
 import { CommonContext } from "../contexts/CommonContext";
+import { BACKEND_API_URL } from "../utils/constants";
 
 interface DataType {
   id?: string;
@@ -29,10 +30,10 @@ export type User = {
   createdAt: Date;
 }
 
-const getUserUrl = "http://44.204.82.242:4000/user/all";
-const banUserUrl = "http://44.204.82.242:4000/user/banUser";
-const promoteUserUrl = "http://44.204.82.242:4000/user/promoteUser";
-const demoteUserUrl = "http://44.204.82.242:4000/user/demoteUser";
+const getUserUrl = `${BACKEND_API_URL}/user/all`;
+const banUserUrl = `${BACKEND_API_URL}/user/banUser`;
+const promoteUserUrl = `${BACKEND_API_URL}/user/promoteUser`;
+const demoteUserUrl = `${BACKEND_API_URL}/user/demoteUser`;
 
 const UserTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();

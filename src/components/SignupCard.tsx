@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BACKEND_API_URL } from "../utils/constants";
 
 const StyledErrorMessage = styled.div``;
 
@@ -10,7 +11,7 @@ const SignupCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const url = "http://44.204.82.242:4000/user/register";
+  const url = `${BACKEND_API_URL}/user/register`;
 
   const onFinish = async (values: any) => {
     console.log(values);
