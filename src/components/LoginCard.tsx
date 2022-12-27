@@ -13,7 +13,7 @@ const LoginCard = (): JSX.Element => {
 
   const { token, setToken } = useContext(CommonContext);
 
-  const url = "http://localhost:4000/auth/signin";
+  const url = "http://44.204.82.242:4000/auth/signin";
   const onFinish = async (values: any) => {
     const response = await axios.post(url, values);
 

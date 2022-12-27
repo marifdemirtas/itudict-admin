@@ -10,7 +10,7 @@ const SignupCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const url = "http://localhost:4000/user/register";
+  const url = "http://44.204.82.242:4000/user/register";
 
   const onFinish = async (values: any) => {
     console.log(values);

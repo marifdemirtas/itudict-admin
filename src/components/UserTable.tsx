@@ -29,10 +29,10 @@ export type User = {
   createdAt: Date;
 }
 
-const getUserUrl = "http://localhost:4000/user/all";
-const banUserUrl = "http://localhost:4000/user/banUser";
-const promoteUserUrl = "http://localhost:4000/user/promoteUser";
-const demoteUserUrl = "http://localhost:4000/user/demoteUser";
+const getUserUrl = "http://44.204.82.242:4000/user/all";
+const banUserUrl = "http://44.204.82.242:4000/user/banUser";
+const promoteUserUrl = "http://44.204.82.242:4000/user/promoteUser";
+const demoteUserUrl = "http://44.204.82.242:4000/user/demoteUser";
 
 const UserTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();
