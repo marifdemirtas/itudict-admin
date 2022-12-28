@@ -59,17 +59,17 @@ const UserTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [updateTable, setUpdateTable] = useState<boolean>(false);
   const [searchKey, setSearchKey] = useState<string>("");
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [tableSize, setTableSize] = useState<number>(0);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };
 
 
     useEffect(() => {
-      axios.get(getUserWithFilterUrl(searchKey, page + 1, 5), {
+      axios.get(getUserWithFilterUrl(searchKey, page, 5), {
         ...config,
         params: {
           key: searchKey,
@@ -84,7 +84,7 @@ const UserTable = ():JSX.Element => {
             commentCount: user.comments.length,
             topicCount: user.liked_comments.length,
             likedCount: user.topics.length,
-            createdAt: user.createdAt,
+            createdAt: user.createdAt.toString().slice(0, 10),
             actions: user.role.toUpperCase() === "SENIOR" ? ["Demote"] : ["Promote"],
             action: ['Ban'],
           }
@@ -174,11 +174,6 @@ const UserTable = ():JSX.Element => {
         title: 'Created At',
         dataIndex: 'createdAt',
         key: 'createdAt',
-      },
-      {
-        title: 'Role',
-        dataIndex: 'role',
-        key: 'role',
       },
       {
         title: 'Actions',
