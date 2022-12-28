@@ -29,16 +29,16 @@ interface DataType {
 
 const getAllTopicsWithPagination5Url = (page: number) => `${BACKEND_API_URL}/topic/paginated/${page}/5`;
 const getAllTopicsWithPagination10Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/10`;
-const deleteTopicUrl = `${BACKEND_API_URL}/topic/delete`;
+const deleteTopicUrl = (id: string) => `${BACKEND_API_URL}/topic/delete/${id}`;
 
 
-const TopicTable = ():JSX.Element => {
+const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [tableSize, setTableSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [updateTable, setUpdateTable] = useState<boolean>(false);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };
@@ -62,18 +62,17 @@ const TopicTable = ():JSX.Element => {
     }, [updateTable, currentPage]);
 
     const deleteHandler = (index: number) => {
-      // if (!!tableElements && tableElements.length > 0) {
-      //   axios.post(deleteCommentUrl, {},
-      //     {
-      //       ...config,
-      //       params: {
-      //         email: tableElements[index].email
-      //       }
-      //     }).then(()=>{
-      //       setUpdateTable(!updateTable);
-      //     }
-      //     )
-      // }
+      if (!!tableElements && tableElements.length > 0) {
+        axios.delete(deleteTopicUrl(tableElements[index].id),
+          {
+            ...config,
+          }).then(()=>{
+            setUpdateTable(!updateTable);
+            setVisible(true);
+            setTimeout(() => {setVisible(false)}, 4000);
+          }
+          )
+      }
     }
 
     const columns: ColumnsType<DataType> = [

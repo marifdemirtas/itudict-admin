@@ -45,7 +45,7 @@ const CommentTable = ({ setVisible }: { setVisible: (a: boolean) => void} ): JSX
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [updateTable, setUpdateTable] = useState<boolean>(false);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };

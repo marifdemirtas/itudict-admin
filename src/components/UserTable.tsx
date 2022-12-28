@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pagination, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Comment } from './CommentTable';
@@ -160,16 +160,19 @@ const UserTable = ():JSX.Element => {
         title: 'Number of Comments',
         dataIndex: 'commentCount',
         key: 'commentCount',
+        width: "50px",
       },
       {
         title: 'Number of Topics',
         dataIndex: 'topicCount',
         key: 'topicCount',
+        width: "50px",
       },
       {
         title: 'Number of Likes',
         dataIndex: 'likedCount',
         key: 'likedCount',
+        width: "50px",
       },
       {
         title: 'Created At',
