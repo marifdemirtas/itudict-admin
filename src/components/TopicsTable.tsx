@@ -11,6 +11,7 @@ const StyledPagination = styled(Pagination)`
   border-radius: 5px;
   margin-left: auto;
   margin-top: 20px;
+  max-width: 380px;
   .ant-pagination-options{
     display: none !important;
   }
