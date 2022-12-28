@@ -1,26 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { CommonContext } from "../contexts/CommonContext";
 import { BACKEND_API_URL } from "../utils/constants";
-
 
 const StyledErrorMessage = styled.div``;
 
-const LoginCard = (): JSX.Element => {
+const SignupCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const { token, setToken } = useContext(CommonContext);
+  const url = `${BACKEND_API_URL}/user/register`;
 
-  const url = `${BACKEND_API_URL}/auth/signin`;
   const onFinish = async (values: any) => {
+    console.log(values);
     const response = await axios.post(url, values);
-
-    setToken(response.data.accessToken);
-    localStorage.setItem("token", response.data.accessToken);
+    console.log(response);
     if (response.status >= 200 && response.status < 300) {
       setValid(true);
       navigate("/panel");
@@ -56,9 +52,27 @@ const LoginCard = (): JSX.Element => {
         </Form.Item>
 
         <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           label="Password"
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          label="Password Confirmation"
+          name="passwordConfirm"
+          rules={[
+            { required: true, message: "Please input your password again!" },
+          ]}
         >
           <Input.Password />
         </Form.Item>
@@ -73,4 +87,4 @@ const LoginCard = (): JSX.Element => {
   );
 };
 
-export default LoginCard;
+export default SignupCard;
