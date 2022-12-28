@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { User } from './UserTable';
 import styled from 'styled-components';
+import { BACKEND_API_URL } from "../utils/constants";
 
 const StyledPagination = styled(Pagination)`
   background: white;
@@ -26,9 +27,9 @@ interface DataType {
   action: string[];
 }
 
-const getAllTopicsWithPagination5Url = (page: number) => `http://localhost:4000/topic/paginated/${page}/5`;
-const getAllTopicsWithPagination10Url = (page: number) => `http://localhost:4000/comment/all/${page}/10`;
-const deleteTopicUrl = "http://localhost:4000/topic/delete";
+const getAllTopicsWithPagination5Url = (page: number) => `${BACKEND_API_URL}/topic/paginated/${page}/5`;
+const getAllTopicsWithPagination10Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/10`;
+const deleteTopicUrl = `${BACKEND_API_URL}/topic/delete`;
 
 
 const TopicTable = ():JSX.Element => {

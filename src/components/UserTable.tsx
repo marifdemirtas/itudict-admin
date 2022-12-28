@@ -5,6 +5,7 @@ import { Comment } from './CommentTable';
 import axios from 'axios';
 import {Input} from 'antd';
 import styled from 'styled-components';
+import { BACKEND_API_URL } from "../utils/constants";
 
 const {Search} = Input;
 
@@ -50,10 +51,10 @@ export type User = {
   createdAt: Date;
 }
 
-const getUserWithFilterUrl = (key: any, page: any, limit: any) => {return `http://localhost:4000/user/filter/${page}/${limit}`}
-const banUserUrl = "http://localhost:4000/user/banUser";
-const promoteUserUrl = "http://localhost:4000/user/promoteUser";
-const demoteUserUrl = "http://localhost:4000/user/demoteUser";
+const getUserWithFilterUrl = (key: any, page: any, limit: any) => {return `${BACKEND_API_URL}/user/filter/${page}/${limit}`}
+const banUserUrl = `${BACKEND_API_URL}/user/banUser`;
+const promoteUserUrl = `${BACKEND_API_URL}/user/promoteUser`;
+const demoteUserUrl = `${BACKEND_API_URL}/user/demoteUser`;
 
 const UserTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();

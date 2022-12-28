@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import { User } from './UserTable';
 import styled from 'styled-components';
+import { BACKEND_API_URL } from "../utils/constants";
 
 const StyledPagination = styled(Pagination)`
   background: white;
@@ -31,10 +32,10 @@ export type Comment = {
   createdAt: Date;
 }
 
-const getAllCommentsUrl = "http://localhost:4000/comment/all";
-const getAllCommentsWithPagination5Url = (page: number) => `http://localhost:4000/comment/all/${page}/5`;
-const getAllCommentsWithPagination10Url = (page: number) => `http://localhost:4000/comment/all/${page}/10`;
-const deleteCommentUrl = (id:string) =>  `http://localhost:4000/comment/delete/${id}`;
+const getAllCommentsUrl = `${BACKEND_API_URL}/comment/all`;
+const getAllCommentsWithPagination5Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/5`;
+const getAllCommentsWithPagination10Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/10`;
+const deleteCommentUrl = (id:string) =>  `${BACKEND_API_URL}/comment/delete/${id}`;
 
 
 const CommentTable = ({ setVisible }: { setVisible: (a: boolean) => void} ): JSX.Element => {
