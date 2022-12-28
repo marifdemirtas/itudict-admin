@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import CommentsTable from "../components/CommentTable";
 import TopicsTable from "../components/TopicsTable";
 import Navbar from "../components/Navbar";
 import { Alert } from "antd";
