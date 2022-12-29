@@ -1,14 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Pagination, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Topic } from './TopicsTable';
-import { Comment } from './CommentsTable';
+import { Comment } from './CommentTable';
 import axios from 'axios';
-import { CommonContext } from "../contexts/CommonContext";
+import {Input} from 'antd';
+import styled from 'styled-components';
+import { BACKEND_API_URL } from "../utils/constants";
+
+const {Search} = Input;
+
+const StyledPagination = styled(Pagination)`
+  background: white;
+  width: 380px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-top: 20px;
+  .ant-pagination-options{
+    display: none !important;
+  }
+`;
+
+const StyledSearch = styled(Search)`
+  width: 300px;
+  margin-right: auto;
+  display: flex;
+  margin-bottom: 20px;
+`;
 
 interface DataType {
-  id?: string;
-  username?: string;
+  username?: string,
+  commentCount: number,
+  topicCount: number,
+  likedCount: number,
   role?: string;
   email?: string;
   createdAt?: Date;
@@ -23,36 +46,46 @@ export type User = {
   password: string;
   comments: Comment[]; // Comments about the user
   liked_comments: Comment[]; // Liked comments
-  topics: Topic[]; // Topics of the user
   role: string; // Role of the user
   isActive: boolean;
   createdAt: Date;
 }
 
-const getUserUrl = "http://44.204.82.242:4000/user/all";
-const banUserUrl = "http://44.204.82.242:4000/user/banUser";
-const promoteUserUrl = "http://44.204.82.242:4000/user/promoteUser";
-const demoteUserUrl = "http://44.204.82.242:4000/user/demoteUser";
+const getUserWithFilterUrl = (key: any, page: any, limit: any) => {return `${BACKEND_API_URL}/user/filter/${page}/${limit}`}
+const banUserUrl = `${BACKEND_API_URL}/user/banUser`;
+const promoteUserUrl = `${BACKEND_API_URL}/user/promoteUser`;
+const demoteUserUrl = `${BACKEND_API_URL}/user/demoteUser`;
 
 const UserTable = ():JSX.Element => {
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [updateTable, setUpdateTable] = useState<boolean>(false);
+  const [searchKey, setSearchKey] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [tableSize, setTableSize] = useState<number>(0);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const config = {
     headers: { Authorization: `Bearer ${token}` }
   };
 
 
     useEffect(() => {
-      axios.get(getUserUrl, config).then((response) => {
-        const element: DataType[] = response.data.map((user:any) => {
+      axios.get(getUserWithFilterUrl(searchKey, page, 5), {
+        ...config,
+        params: {
+          key: searchKey,
+        }
+      }).then((response) => {
+        setTableSize(response.data.count);
+        const element: DataType[] = response.data.users.map((user:any) => {
           const userObject: DataType = {
-            id: user._id,
             username: user.username,
-            email: user.email,
             role: user.role,
-            createdAt: user.createdAt,
+            email: user.email,
+            commentCount: user.comments.length,
+            topicCount: user.liked_comments.length,
+            likedCount: user.topics.length,
+            createdAt: user.createdAt.toString().slice(0, 10),
             actions: user.role.toUpperCase() === "SENIOR" ? ["Demote"] : ["Promote"],
             action: ['Ban'],
           }
@@ -60,7 +93,7 @@ const UserTable = ():JSX.Element => {
         })
         setTableElements(element);
       });
-    }, [updateTable]);
+    }, [updateTable, page, searchKey]);
 
     const promoteHandler = (index: any) => {
       if (!!tableElements && tableElements.length > 0) {
@@ -109,12 +142,6 @@ const UserTable = ():JSX.Element => {
     
     const columns: ColumnsType<DataType> = [
       {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-        render: (text) => <a>{text}</a>,
-      },
-      {
         title: 'Username',
         dataIndex: 'username',
         key: 'username',
@@ -123,6 +150,29 @@ const UserTable = ():JSX.Element => {
         title: 'Role',
         dataIndex: 'role',
         key: 'role',
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+      },
+      {
+        title: 'Number of Comments',
+        dataIndex: 'commentCount',
+        key: 'commentCount',
+        width: "50px",
+      },
+      {
+        title: 'Number of Topics',
+        dataIndex: 'topicCount',
+        key: 'topicCount',
+        width: "50px",
+      },
+      {
+        title: 'Number of Likes',
+        dataIndex: 'likedCount',
+        key: 'likedCount',
+        width: "50px",
       },
       {
         title: 'Created At',
@@ -176,10 +226,16 @@ const UserTable = ():JSX.Element => {
       }
     ];
     
+    const onSearch = (key: string) => {
+      setSearchKey(key);
+    }
 
     return (
     <div>
-    {tableElements && <Table columns={columns} dataSource={tableElements} />}
+      <StyledSearch placeholder="input search text" allowClear onSearch={(event) => onSearch(event)} />
+      {tableElements && <Table columns={columns} dataSource={tableElements} pagination={false}/>}
+      <StyledPagination current={page} total={tableSize*2} onChange={(page) => setPage(page)}/>
+      
     </div>
     )
 };

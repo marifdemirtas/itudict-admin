@@ -12,7 +12,6 @@ const StyledPagination = styled(Pagination)`
   border-radius: 5px;
   margin-left: auto;
   margin-top: 20px;
-  max-width: 380px;
   .ant-pagination-options{
     display: none !important;
   }
@@ -20,19 +19,27 @@ const StyledPagination = styled(Pagination)`
 
 interface DataType {
   id: string;
-  title: string;
-  count: number;
   owner: User;
+  content: string;
   createdAt: Date;
   action: string[];
 }
 
-const getAllTopicsWithPagination5Url = (page: number) => `${BACKEND_API_URL}/topic/paginated/${page}/5`;
-const getAllTopicsWithPagination10Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/10`;
-const deleteTopicUrl = (id: string) => `${BACKEND_API_URL}/topic/delete/${id}`;
+export type Comment = {
+  id: string;
+  owner: User;
+  content: string;
+  createdAt: Date;
+}
+
+const getAllCommentsUrl = `${BACKEND_API_URL}/comment/all`;
+const getAllCommentsWithPagination5Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/5`;
+const getAllCommentsWithPagination10Url = (page: number) => `${BACKEND_API_URL}/comment/all/${page}/10`;
+const deleteCommentUrl = (id:string) =>  `${BACKEND_API_URL}/comment/delete/${id}`;
 
 
-const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Element => {
+const CommentTable = ({ setVisible }: { setVisible: (a: boolean) => void} ): JSX.Element => {
+
   const [tableElements, setTableElements] = useState<DataType[]>();
   const [tableSize, setTableSize] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -44,18 +51,17 @@ const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Ele
   };
 
     useEffect(() => {
-      axios.get(getAllTopicsWithPagination5Url(currentPage-1), config).then((response) => {
+      axios.get(getAllCommentsWithPagination5Url(currentPage-1), config).then((response) => {
         setTableSize(response.data.count);
-        const element: DataType[] = response.data.topics.map((topic:any) => {
-          const topicObject: DataType = {
-            id: topic._id,
-            title: topic.title,
-            count: topic.comment_count,
-            owner: topic.owner.username,
-            createdAt: topic.createdAt,
+        const element: DataType[] = response.data.comments.map((comment:any) => {
+          const commentObject: DataType = {
+            id: comment._id,
+            content: comment.content,
+            owner: comment.owner.username || "",
+            createdAt: comment.createdAt,
             action: ['Delete'],
           }
-          return topicObject;
+          return commentObject;
         })
         setTableElements(element);
       });
@@ -63,7 +69,7 @@ const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Ele
 
     const deleteHandler = (index: number) => {
       if (!!tableElements && tableElements.length > 0) {
-        axios.delete(deleteTopicUrl(tableElements[index].id),
+        axios.delete(deleteCommentUrl(tableElements[index].id),
           {
             ...config,
           }).then(()=>{
@@ -88,14 +94,9 @@ const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Ele
         key: 'owner',
       },
       {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-      },
-      {
-        title: 'Number of Comments',
-        dataIndex: 'count',
-        key: 'count',
+        title: 'Content',
+        dataIndex: 'content',
+        key: 'content',
       },
       {
         title: 'Created At',
@@ -135,4 +136,4 @@ const TopicTable = ({ setVisible }: { setVisible: (a: boolean) => void}):JSX.Ele
     )
 };
 
-export default TopicTable;
+export default CommentTable;

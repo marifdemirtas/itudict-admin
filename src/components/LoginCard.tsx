@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { CommonContext } from "../contexts/CommonContext";
+import { BACKEND_API_URL } from "../utils/constants";
 
 const StyledErrorMessage = styled.div``;
 
@@ -11,14 +11,11 @@ const LoginCard = (): JSX.Element => {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 
-  const { token, setToken } = useContext(CommonContext);
-
-  const url = "http://44.204.82.242:4000/auth/signin";
+  const url = `${BACKEND_API_URL}/auth/signin`;
   const onFinish = async (values: any) => {
     const response = await axios.post(url, values);
 
-    setToken(response.data.accessToken);
-    localStorage.setItem("token", response.data.accessToken);
+    sessionStorage.setItem("token", response.data.accessToken);
     if (response.status >= 200 && response.status < 300) {
       setValid(true);
       navigate("/panel");

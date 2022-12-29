@@ -1,29 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Panel from "./pages/Panel";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Comments from "./pages/Comments";
 import Topics from "./pages/Topics";
-import Signup from "./pages/Signup";
-import { CommonContext } from "./contexts/CommonContext";
+
+const PrivateRoute = ({ component: Component }: any) => {
+  const authLogin = sessionStorage.getItem("token") !== null;
+
+  return authLogin ? <Component /> : <Navigate to="/login" replace={true} />;
+};
 
 function App() {
-  const [token, setToken] = useState("");
   return (
-    <CommonContext.Provider value={{ token, setToken }}>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/panel" element={<Panel />} />
-          <Route path="/comment" element={<Comments />} />
-          <Route path="/topic" element={<Topics />} />
-        </Routes>
-      </div>
-    </CommonContext.Provider>
+    <div className="App">
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/panel" element={<PrivateRoute component={Panel} />} />
+        <Route
+          path="/comment"
+          element={<PrivateRoute component={Comments} />}
+        />
+        <Route path="/topic" element={<PrivateRoute component={Topics} />} />
+      </Routes>
+    </div>
   );
 }
 
