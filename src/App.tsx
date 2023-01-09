@@ -23,6 +23,7 @@ function App() {
           element={<PrivateRoute component={Comments} />}
         />
         <Route path="/topic" element={<PrivateRoute component={Topics} />} />
+        <Route path="/" element={<Navigate replace to="/panel" />}/>
       </Routes>
     </div>
   );
